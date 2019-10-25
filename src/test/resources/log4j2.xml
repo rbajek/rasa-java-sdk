@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+	<Appenders>
+		<Console name="LogToConsole">
+			<PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %c{1.} - %msg%n"/>
+		</Console>
+	</Appenders>
+
+	<Loggers>
+		<Logger name="io.rbajek.rasa" level="${env:LOG_LEVEL:-info}" additivity="false">
+			<AppenderRef ref="LogToConsole"/>
+		</Logger>
+		<Root level="${env:LOG_LEVEL:-error}">
+			<AppenderRef ref="LogToConsole"/>
+		</Root>
+	</Loggers>
+</Configuration>
