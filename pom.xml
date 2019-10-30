@@ -4,10 +4,11 @@
 
 	<groupId>io.github.rbajek</groupId>
 	<artifactId>rasa-java-sdk</artifactId>
-	<version>0.1.0-beta</version>
+	<version>0.1.0</version>
 	
 	<name>rasa-java-sdk</name>
 	<description>Java SDK for the development of custom actions for Rasa</description>
+	<url>https://github.com/rbajek/rasa-java-sdk</url>
 
 	<licenses>
 		<license>
@@ -19,8 +20,8 @@
 
 	<developers>
 		<developer>
-			<id>rbajek</id>
 			<name>Rafał Bajek</name>
+			<email>raf.bajek@gmail.com</email>
 		</developer>
 	</developers>
 
@@ -41,7 +42,7 @@
 		<lombok.version>1.18.4</lombok.version>
 		<junit.version>5.5.0</junit.version>
 		
-		<fasterxml.jackson.version>2.9.9.1</fasterxml.jackson.version>
+		<fasterxml.jackson.version>2.10.0</fasterxml.jackson.version>
 
 		<skipTests>false</skipTests>
 		<skipITs>${skipTests}</skipITs>
@@ -118,6 +119,34 @@
 					<!--<showWarnings>true</showWarnings>-->
 					<!--<showDeprecation>true</showDeprecation>-->
 				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>3.1.0</version>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>3.1.1</version>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 
 			<plugin>
