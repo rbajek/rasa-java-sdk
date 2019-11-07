@@ -4,7 +4,7 @@
 
 	<groupId>io.github.rbajek</groupId>
 	<artifactId>rasa-java-sdk</artifactId>
-	<version>0.1.0</version>
+	<version>1.0.0</version>
 	
 	<name>rasa-java-sdk</name>
 	<description>Java SDK for the development of custom actions for Rasa</description>
