@@ -26,6 +26,7 @@ public class ActionExecutor {
             throw new RasaException("An action must implement a name");
         }
         this.actions.put(action.name(), action);
+        LOGGER.info("Registered action for '{}'.", action.name());
     }
 
     private void validateEvents(List<AbstractEvent> events, String actionName) {
@@ -67,5 +68,9 @@ public class ActionExecutor {
         }
         LOGGER.warn("Received an action call without an action.");
         return null;
+    }
+
+    public List<String> getRegisteredActionNames() {
+        return new ArrayList<>(this.actions.keySet());
     }
 }
