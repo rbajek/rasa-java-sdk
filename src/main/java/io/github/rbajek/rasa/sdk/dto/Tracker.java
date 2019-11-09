@@ -82,6 +82,21 @@ public class Tracker {
         return this.slots != null ? this.slots : Collections.emptyMap();
     }
 
+    public boolean hasSlots() {
+        return this.slots != null ? this.slots.isEmpty() == false : false;
+    }
+
+    public Object getSlotValue(String slotName) {
+        return getSlotValue(slotName, Object.class);
+    }
+
+    public <T> T getSlotValue(String slotName, Class<T> type) {
+        if(this.slots != null && this.slots.containsKey(slotName)) {
+            return type.cast(this.slots.get(slotName));
+        }
+        return null;
+    }
+
     public boolean hasSlotValue(String slotName) {
         if(this.slots != null && this.slots.containsKey(slotName)) {
             return this.slots.get(slotName) != null;

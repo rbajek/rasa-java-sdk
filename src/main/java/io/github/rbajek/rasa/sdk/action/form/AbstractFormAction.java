@@ -1,20 +1,20 @@
 package io.github.rbajek.rasa.sdk.action.form;
 
 import io.github.rbajek.rasa.sdk.CollectingDispatcher;
-import io.github.rbajek.rasa.sdk.dto.Domain;
-import io.github.rbajek.rasa.sdk.dto.Tracker;
-import io.github.rbajek.rasa.sdk.dto.event.AbstractEvent;
-import io.github.rbajek.rasa.sdk.dto.event.Form;
-import io.github.rbajek.rasa.sdk.dto.event.SlotSet;
-import io.github.rbajek.rasa.sdk.util.SerializationUtils;
 import io.github.rbajek.rasa.sdk.action.Action;
 import io.github.rbajek.rasa.sdk.action.form.slot.mapper.AbstractSlotMapping;
 import io.github.rbajek.rasa.sdk.action.form.slot.mapper.EntitySlotMapping;
 import io.github.rbajek.rasa.sdk.action.form.slot.mapper.IntentSlotMapping;
 import io.github.rbajek.rasa.sdk.action.form.slot.mapper.TriggerIntentSlotMapping;
+import io.github.rbajek.rasa.sdk.dto.Domain;
+import io.github.rbajek.rasa.sdk.dto.Tracker;
+import io.github.rbajek.rasa.sdk.dto.event.AbstractEvent;
+import io.github.rbajek.rasa.sdk.dto.event.Form;
+import io.github.rbajek.rasa.sdk.dto.event.SlotSet;
 import io.github.rbajek.rasa.sdk.exception.ActionExecutionRejectionException;
 import io.github.rbajek.rasa.sdk.exception.RasaException;
 import io.github.rbajek.rasa.sdk.util.CollectionsUtils;
+import io.github.rbajek.rasa.sdk.util.SerializationUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -122,10 +122,10 @@ public abstract class AbstractFormAction implements Action {
      */
     private void logFormSlots(Tracker tracker) {
         List<String> requiredSlots = requiredSlots(tracker);
-        if(CollectionsUtils.isNotEmpty(requiredSlots) && CollectionsUtils.isNotEmpty(tracker.getSlots())) {
+        if(CollectionsUtils.isNotEmpty(requiredSlots) && tracker.hasSlots()) {
             StringBuilder slotValues = new StringBuilder();
             requiredSlots.forEach(slotName -> {
-                slotValues.append("\n").append("\t").append(slotName).append(": ").append(tracker.getSlots().get(slotName));
+                slotValues.append("\n").append("\t").append(slotName).append(": ").append(tracker.getSlotValue(slotName));
             });
             LOGGER.debug("No slots left to request, all required slots are filled:{}", slotValues);
         }
@@ -163,8 +163,8 @@ public abstract class AbstractFormAction implements Action {
             List<String> requiredSlots = requiredSlots(tracker);
             if(CollectionsUtils.isNotEmpty(requiredSlots)) {
                 requiredSlots.forEach(slotName -> {
-                    if (CollectionsUtils.isNotEmpty(tracker.getSlots()) && !shouldRequestSlot(tracker, slotName)) {
-                        preFilledSlots.put(slotName, tracker.getSlots().get(slotName));
+                    if (tracker.hasSlots() && !shouldRequestSlot(tracker, slotName)) {
+                        preFilledSlots.put(slotName, tracker.getSlotValue(slotName));
                     }
                 });
             }
@@ -218,7 +218,7 @@ public abstract class AbstractFormAction implements Action {
 
         // extract requested slot
         if(tracker.hasSlotValue(REQUESTED_SLOT)) {
-            Object slotToFill = tracker.getSlots().get(REQUESTED_SLOT);
+            Object slotToFill = tracker.getSlotValue(REQUESTED_SLOT);
             slotValues.putAll(extractRequestedSlot(dispatcher, tracker, domain));
 
             if(CollectionsUtils.isEmpty(slotValues)) {
@@ -247,7 +247,7 @@ public abstract class AbstractFormAction implements Action {
             for (String slotName : requiredSlots) {
                 if(shouldRequestSlot(tracker, slotName)) {
                     LOGGER.debug("Request next slot '{}'", slotName);
-                    dispatcher.utterTemplate("utter_ask_"+slotName, CollectionsUtils.isNotEmpty(tracker.getSlots()) ? tracker.getSlots() : Collections.emptyMap());
+                    dispatcher.utterTemplate("utter_ask_" + slotName, tracker.hasSlots() ? tracker.getSlots() : Collections.emptyMap());
                     return new SlotSet(REQUESTED_SLOT, slotName);
                 }
             };
@@ -293,7 +293,7 @@ public abstract class AbstractFormAction implements Action {
         if(requiredSlots != null && !requiredSlots.isEmpty()) {
             // look for other slots
             for (String slotName : requiredSlots) {
-                if(!slotName.equals(tracker.getSlots().get(REQUESTED_SLOT))) {
+                if(!slotName.equals(tracker.getSlotValue(REQUESTED_SLOT))) {
                     List<AbstractSlotMapping> otherSlotMappings = getMappingsForSlot(slotName);
                     for (AbstractSlotMapping otherSlotMapping : otherSlotMappings) {
                         // check whether the slot should be filled by entity with the same name
@@ -328,7 +328,7 @@ public abstract class AbstractFormAction implements Action {
     }
 
     /**
-     * Extract the value of requested slot from a user input else return None
+     * Extract the value of requested slot from a user input
      *
      * @param dispatcher a {@link CollectingDispatcher} object
      * @param tracker a {@link Tracker} object
@@ -336,15 +336,15 @@ public abstract class AbstractFormAction implements Action {
      * @return map of the requested slot with extracted value
      */
     protected Map<String, Object> extractRequestedSlot(CollectingDispatcher dispatcher, Tracker tracker, Domain domain) {
-        if(CollectionsUtils.isEmpty(tracker.getSlots()) || tracker.getSlots().get(REQUESTED_SLOT) == null) {
+        if(tracker.hasSlotValue(REQUESTED_SLOT) == false) {
             return Collections.emptyMap();
         }
 
-        Object slotToFill = tracker.getSlots().get(REQUESTED_SLOT);
+        String slotToFill = tracker.getSlotValue(REQUESTED_SLOT, String.class);
         LOGGER.debug("Trying to extract requested slot '{}' ...", slotToFill);
 
         //get mapping for requested slot
-        List<AbstractSlotMapping> requestedSlotMappings = getMappingsForSlot((String) slotToFill);
+        List<AbstractSlotMapping> requestedSlotMappings = getMappingsForSlot(slotToFill);
         for (AbstractSlotMapping requestedSlotMapping : requestedSlotMappings) {
             LOGGER.debug("Got mapping '{}'", requestedSlotMapping);
             if(intentIsDesired(requestedSlotMapping, tracker)) {
@@ -369,7 +369,7 @@ public abstract class AbstractFormAction implements Action {
                 if(value != null) {
                     LOGGER.debug("Successfully extracted '{}' for requested slot '{}'", value, slotToFill);
                     Map<String, Object> resultMap = new HashMap<>();
-                    resultMap.put((String)slotToFill, value);
+                    resultMap.put(slotToFill, value);
                     return resultMap;
                 }
             }
@@ -438,7 +438,7 @@ public abstract class AbstractFormAction implements Action {
      * @return <code>true</code> - if the given slot should be requested. Otherwise - <code>false</code>
      */
     private boolean shouldRequestSlot(Tracker tracker, String slotName) {
-        return CollectionsUtils.isNotEmpty(tracker.getSlots()) && (!tracker.getSlots().containsKey(slotName) || tracker.getSlots().get(slotName) == null);
+        return tracker.hasSlotValue(slotName) == false;
     }
 
     @Override

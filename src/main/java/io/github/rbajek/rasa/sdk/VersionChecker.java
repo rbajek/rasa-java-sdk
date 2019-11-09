@@ -11,7 +11,7 @@ class VersionChecker {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(VersionChecker.class);
 
-    public static final String SUPPORTED_VERSION = "1.3.2";
+    public static final String SUPPORTED_VERSION = "1.4.0";
 
     /**
      * <p>Check if the version of rasa and rasa_sdk are compatible.</p>
