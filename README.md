@@ -37,8 +37,6 @@ SDK is available in the Central Maven Reposity:
 |----------------|-----------------------------------|
 | `1.0.x`        | `>=1.4.x`              |
 
-To ensure compatibility use the same version for both, modulo the last number, i.e. using version A.B.x the numbers A and B should be identical for both Rasa and Rasa SDK.
-
 ## Usage
 
 Let's assume that we have a restaurant bot and when the user says "show me a Mexican restaurant", our bot should return the restaurant from the database.
