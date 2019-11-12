@@ -27,7 +27,7 @@ SDK is available in the Central Maven Reposity:
 <dependency>
   <groupId>io.github.rbajek</groupId>
   <artifactId>rasa-java-sdk</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.1</version>
 </dependency>
 ```
 
@@ -81,7 +81,7 @@ public class ActionCheckRestaurants implements Action {
 
 Afterwards, we have to register our action within the `ActionExecutor` (which is part of the SDK) and run it. The response should be return back to Rasa as a JSON format.
 
-To run the custom action, Rasa requires the action server, which exposes a [REST API](https://rasa.com/docs/rasa/api/action-server/),which can be executed to run custom action. So, we need to have the REST endpoint in our system, which can consume the Rasa's JSON request, run the custom action, and return response in JSON format.
+To run the custom action, Rasa needs the action server, which exposes a [REST API](https://rasa.com/docs/rasa/api/action-server/),which can be executed to run custom action. So, we need to have the REST endpoint in our system, which can consume the Rasa's JSON request, run the custom action, and return response in JSON format.
 
 The simple REST endpoint which can handle requests from Rasa is below:.
 
