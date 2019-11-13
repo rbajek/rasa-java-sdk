@@ -61,10 +61,10 @@ public class ActionCheckRestaurants implements Action {
         return "action_check_restaurants";
     }
 	
-	private String readFromRestaurantDatabase(String cuisine) {
-	   //TODO should be implemented
-	   return null;
-	}
+    private String readFromRestaurantDatabase(String cuisine) {
+        //TODO should be implemented
+	return null;
+    }
 
     @Override
     public List<AbstractEvent> run(CollectingDispatcher collectingDispatcher, Tracker tracker, Domain domain) {
@@ -73,7 +73,7 @@ public class ActionCheckRestaurants implements Action {
         // read from database
         String restaurant = readFromRestaurantDatabase(cuisine);
 		
-		// return result of the action
+	// return result of the action
         return Arrays.asList(new SlotSet("matches", restaurant));
     }
 }
@@ -104,14 +104,14 @@ public class RasaWebhook {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     public ActionResponse handleAction(ActionRequest request) {
-	   // create instance of the action executor
+	// create instance of the action executor
        ActionExecutor actionExecutor = new ActionExecutor();
 	   
-	   // register custom action
+	// register custom action
        actionExecutor.registerAction(new ActionCheckRestaurants());
        
-	   // run custom action and return result
-	   return actionExecutor.run(actionRequest);
+	// run custom action and return result
+	return actionExecutor.run(actionRequest);
     }
 }
 ```
@@ -139,7 +139,7 @@ If you have already your own system, which can expouse the REST API, you can sim
     <dependency>
       <groupId>io.github.rbajek</groupId>
       <artifactId>rasa-java-sdk</artifactId>
-      <version>1.0.0</version>
+      <version>1.0.1</version>
     </dependency>
     ```
 2. Expouse the REST endpoint, which can received calls from Rasa. This enpoint should handle POST requests and map the input JSON request to
