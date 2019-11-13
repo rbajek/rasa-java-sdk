@@ -1,6 +1,6 @@
 # Rasa Java-SDK
 
-Java SDK for the development of custom actions for Rasa.
+Java SDK for the development of custom actions for [Rasa](https://rasa.com/).
 
 When you want to do something advanced (e.g. execute external API, execute some business logic, etc.) by your Rasa's bot, you should use a [custom actions](https://rasa.com/docs/rasa/core/actions/#custom-actions).
 
