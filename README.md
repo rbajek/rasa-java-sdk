@@ -78,6 +78,9 @@ public class ActionCheckRestaurants implements Action {
     }
 }
 ```
+Currently, SDK supports two types of custom actions:
+- **general** - which corresponds to [Rasa Custom Action](https://rasa.com/docs/rasa/core/actions/#custom-actions). To use this kind of actions, you can create a Java class which implement the ``io.github.rbajek.rasa.sdk.action.Action`` interface. [Here](https://github.com/rbajek/rasa-java-action-server/blob/master/src/main/java/io/github/rbajek/rasa/action/server/action/custom/joke/ActionJoke.java) you can find an example
+- **forms** - which corresponds to [Rasa Forms](https://rasa.com/docs/rasa/core/forms/). Ths kind of actions should extends the ``io.github.rbajek.rasa.sdk.action.form.AbstractFormAction``. [Here](https://github.com/rbajek/rasa-java-action-server/blob/master/src/main/java/io/github/rbajek/rasa/action/server/action/custom/form/restaurant/RestaurantFormAction.java) you can find an example
 
 Afterwards, we have to register our action within the `ActionExecutor` (which is part of the SDK) and run it. The response should be return back to Rasa as a JSON format.
 
