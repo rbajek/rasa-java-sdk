@@ -116,7 +116,7 @@ public class RasaWebhook {
 }
 ```
 
-in the last step, we need to set the URL of our endpoint in the "endpoints.yml":
+and the last but not least - we need to set the URL of our endpoint in the "endpoints.yml":
 
 ```yml
 action_endpoint:
