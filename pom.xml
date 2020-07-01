@@ -55,7 +55,7 @@
 		<java.version>1.8</java.version>
 
 		<slf4j.version>1.7.26</slf4j.version>
-		<log4j.version>2.12.0</log4j.version>
+		<log4j.version>2.13.3</log4j.version>
 		<lombok.version>1.18.4</lombok.version>
 		<junit.version>5.5.0</junit.version>
 		<fasterxml.jackson.version>2.10.0</fasterxml.jackson.version>
