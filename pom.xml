@@ -58,7 +58,7 @@
 		<log4j.version>2.12.0</log4j.version>
 		<lombok.version>1.18.4</lombok.version>
 		<junit.version>5.5.0</junit.version>
-		<fasterxml.jackson.version>2.10.0</fasterxml.jackson.version>
+		<fasterxml.jackson.version>2.12.6.1</fasterxml.jackson.version>
 
 		<maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
 		<maven-source-plugin.version>3.1.0</maven-source-plugin.version>
